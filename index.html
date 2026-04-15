@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>云端花室</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app-container">
+
+    <div id="page-login" class="screen active">
+        <div class="login-card">
+            <div class="login-logo">☁️🌱</div>
+            <div class="login-title">云端花室</div>
+            <input type="text" id="login-username" class="login-input" placeholder="请输入账号 / 昵称">
+            <input type="password" id="login-password" class="login-input" placeholder="请输入密码 (选填)">
+            <button class="login-btn" onclick="handleLogin()">登录 / 注册</button>
+            <button class="guest-btn" onclick="handleGuestLogin()">游客身份访问</button>
+        </div>
+    </div>
+
+    <div id="page-q1" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('login')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第1题：你最喜欢的色调偏向？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q1', 1, 'page-q2')">A. 暖实色系 （米白、浅棕、卡其、灰蓝）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q1', 2, 'page-q2')">B. 柔和治愈系 （淡粉、奶绿、浅紫、鹅黄）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q1', 3, 'page-q2')">C. 鲜明个性系 （墨绿、酒红、宝蓝、纯黑）</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q2')">继续</button></div>
+    </div>
+
+    <div id="page-q2" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q1')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第2题：闻到哪种味道会让你最放松？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q2', 1, 'page-q3')">A. 干净清爽 （洗衣液香、阳光晒过的被子、海风）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q2', 2, 'page-q3')">B. 温柔花香 （玫瑰、百合、栀子、桂花）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q2', 3, 'page-q3')">C. 独特木质/冷感 （檀香、雪松、柑橘、雨后青草）</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q3')">继续</button></div>
+    </div>
+
+    <div id="page-q3" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q2')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第3题：周末更想怎么度过？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q3', 1, 'page-q4')">A. 踏实安排 （整理房间、做家务、出门采购）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q3', 2, 'page-q4')">B. 温柔独处 （看书听歌、发呆、和朋友小聚）</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q3', 3, 'page-q4')">C. 新鲜探索 （看展、探店、短途旅行、尝试新事物）</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q4')">继续</button></div>
+    </div>
+
+    <div id="page-q4" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q3')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第4题：你对“计划”的态度是？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q4', 1, 'page-q5')">A. 有计划才安心，喜欢按步骤来</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q4', 2, 'page-q5')">B. 可以有计划，但更看重心情和氛围</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q4', 3, 'page-q5')">C. 讨厌被束缚，随性自由更舒服</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q5')">继续</button></div>
+    </div>
+
+    <div id="page-q5" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q4')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第5题：看到陌生人难过，你通常会？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q5', 1, 'page-q6')">A. 理性分析原因，想办法解决问题</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q5', 2, 'page-q6')">B. 先共情安慰，陪着对方就好</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q5', 3, 'page-q6')">C. 不太擅长表达，会默默关注或走开</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q6')">继续</button></div>
+    </div>
+
+    <div id="page-q6" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q5')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第6题：你更认同哪句话？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q6', 1, 'page-mbti')">A. 脚踏实地，比什么都重要</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q6', 2, 'page-mbti')">B. 温柔真诚，是最珍贵的力量</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q6', 3, 'page-mbti')">C. 保持独特，永远不要失去自我</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-mbti')">继续</button></div>
+    </div>
+
+    <div id="page-mbti" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q6')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">接下来的几道题，请根据你的第一直觉选择同意程度。</div></div>
+            <div id="mbti-form">
+                <div class="mbti-question" data-dim="q7"><div class="mbti-text">第7题：周末空闲时，你更愿意参加热闹的聚会，而不是在家看书或独处。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+                <div class="mbti-question" data-dim="q8"><div class="mbti-text">第8题：你更相信“眼见为实”，而不是依靠直觉或灵感判断一件事。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+                <div class="mbti-question" data-dim="q9"><div class="mbti-text">第9题：当和朋友意见不合时，你更容易被“道理”说服，而不是被“感情”打动。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+                <div class="mbti-question" data-dim="q10"><div class="mbti-text">第10题：你习惯提前列出清单并按计划做事，而不是随性而为。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+                <div class="mbti-question" data-dim="q11"><div class="mbti-text">第11题：比起一对一深度聊天，你更享受三五成群的热闹氛围。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+                <div class="mbti-question" data-dim="q12"><div class="mbti-text">第12题：遇到困难时，你的第一反应是“怎么解决”，而不是“好难过”。</div><div class="mbti-circles"><div class="mbti-circle large green-strong" data-val="2" onclick="selectMBTI(this)"></div><div class="mbti-circle medium green-weak" data-val="1" onclick="selectMBTI(this)"></div><div class="mbti-circle small neutral" data-val="0" onclick="selectMBTI(this)"></div><div class="mbti-circle medium purple-weak" data-val="-1" onclick="selectMBTI(this)"></div><div class="mbti-circle large purple-strong" data-val="-2" onclick="selectMBTI(this)"></div></div><div class="mbti-labels"><span>同意</span><span>不同意</span></div></div>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" id="mbti-submit-btn" disabled onclick="goToPage('page-q13')">继续</button></div>
+    </div>
+
+    <div id="page-q13" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-mbti')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第13题：做选择时你更看重？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q13', 1, 'page-q14')">A. 合理性、性价比、结果</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q13', -1, 'page-q14')">B. 感觉、喜好、心情</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q13', 0, 'page-q14')">C. 视情况而定 / 两者皆有</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q14')">继续</button></div>
+    </div>
+
+    <div id="page-q14" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q13')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">第14题：吵架后你更倾向？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q14', 1, 'page-q15')">A. 冷静讲道理，把问题说清楚</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q14', -1, 'page-q15')">B. 先缓和情绪，不想伤害关系</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q14', 0, 'page-q15')">C. 介于两者之间</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="goToPage('page-q15')">继续</button></div>
+    </div>
+
+    <div id="page-q15" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q14')">←</button></div>
+        <div class="content-scroll">
+            <div class="character-area"><div class="character-square">🧑‍🌾</div><div class="dialogue-bubble">最后一题啦，第15题：你觉得你更像？</div></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectSingleOption(this, 'q15', 1, 'calculateResult')">A. 遇事冷静，不爱情绪化</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q15', -1, 'calculateResult')">B. 内心细腻，容易被打动</button>
+                <button class="option-btn" onclick="selectSingleOption(this, 'q15', 0, 'calculateResult')">C. 有时冷静，有时细腻</button>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn" disabled onclick="calculateResult()">查看属于我的花朵人格</button></div>
+    </div>
+
+    <div id="page-result" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToPage('page-q15')">←</button></div>
+        <div class="content-scroll" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
+            <div style="font-size: 18px; color: #666; font-weight:bold;">你的花朵专属人格是</div>
+            <div class="result-card">
+                <div class="mbti-type" id="result-flower-name" style="font-size: 32px;">🌻 向日葵</div>
+                <div class="mbti-type" id="result-mbti-letters" style="font-size: 16px; color:#A0AEC0; margin-top: -5px; letter-spacing: 1px;">(INTJ · 现实稳重型 · 理性主导)</div>
+                <div class="mbti-desc" id="result-flower-desc" style="margin-top: 25px; text-align: left;">
+                    性格踏实可靠，做事有条理，情绪稳定，给人强烈安全感。不喜欢虚的，偏爱简单直接的生活方式，认真又温暖。
+                </div>
+            </div>
+        </div>
+        <div class="bottom-bar"><button class="continue-btn active" onclick="goToPage('page-7')">开启养花之旅 🚀</button></div>
+    </div>
+
+    <div id="page-7" class="screen">
+        <div class="flower-top-nav">
+            <button class="nav-icon-btn" onclick="openCheckinModal()">📅</button>
+            <button class="nav-icon-btn top-center-pet" onclick="toggleDesktopPet()">🐶</button>
+            <div class="top-right-group">
+                <button class="nav-icon-btn">✉️</button>
+                <button class="nav-icon-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+        </div>
+
+        <div class="flower-center-area">
+            
+            <div class="progress-ring-container">
+                <svg class="progress-ring" viewBox="0 0 280 280">
+                    <circle class="ring-bg" cx="140" cy="140" r="130"></circle>
+                    <circle class="ring-fill" id="flower-ring" cx="140" cy="140" r="130" style="stroke-dasharray:816; stroke-dashoffset:816;"></circle>
+                </svg>
+                
+                <div class="flower-tracker" id="flower-tracker">
+                    <div class="flower-on-ring" id="flower-icon">🌸</div>
+                </div>
+
+                <div class="center-plant-bg" id="center-plant"></div>
+                
+                <div class="energy-debug-panel">
+                    <span>测能量</span>
+                    <button class="energy-debug-btn btn-full" onclick="debugSetEnergy(100)">满</button>
+                    <button class="energy-debug-btn btn-add" onclick="debugAddEnergy(10)">+10</button>
+                    <button class="energy-debug-btn btn-sub" onclick="debugAddEnergy(-10)">-10</button>
+                </div>
+            </div>
+
+            <div class="bottom-action-area">
+                <div class="clockin-widget">
+                    <div class="clockin-display" id="clockin-timer">00:00:00</div>
+                    <div class="clockin-status">
+                        <span>今日打卡 <span id="clockin-today-hours">0.0</span> / 9.0h</span>
+                        <button class="test-add-btn" onclick="debugAddHour()">+1h测试</button>
+                    </div>
+                    <button class="clockin-btn" id="clockin-action-btn" onclick="toggleClockin()">
+                        <span id="btn-icon">▶</span> 开始打卡
+                    </button>
+                </div>
+
+                <div class="care-icons-row">
+                    <div class="care-icon-item" onclick="useResource('water')"><div class="red-badge" id="badge-water">0</div>💧</div>
+                    <div class="care-icon-item" onclick="useResource('light')"><div class="red-badge" id="badge-light">0</div>☀️</div>
+                    <div class="care-icon-item" onclick="useResource('fertilizer')"><div class="red-badge" id="badge-fert">0</div>💊</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav-wrapper">
+            <div class="bottom-nav-bar">
+                <div class="nav-tab active" onclick="switchTab('page-7')"><span class="icon">🏠</span>首页</div>
+                <div class="nav-tab" onclick="switchTab('page-growth')"><span class="icon">📈</span>生长记录</div>
+                
+                <div class="diary-pull-up" onclick="switchTabAndOpenCalendar()">
+                    <div class="text">养花日记</div>
+                    <div class="arrow">︽</div>
+                </div>
+
+                <div class="nav-tab" onclick="switchTab('page-circle')"><span class="icon">🌐</span>圈子</div>
+                <div class="nav-tab" onclick="switchTab('page-mine')"><span class="icon">👤</span>我的</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="calendar-overlay" id="calendar-overlay"></div>
+    <div id="calendar-drawer" class="calendar-drawer">
+        <div class="cal-header-strict">
+            <div class="header-left-dome">🌱</div>
+            <div class="header-center-nav" id="cal-header-trigger">
+                <div class="down-arrow-icon" id="close-drawer-btn" style="cursor:pointer;" onclick="closeCalendarDrawer(event)">﹀</div>
+                <div class="date-text-display">
+                    <div id="display-month">1月</div>
+                    <div id="display-year">2026年</div>
+                </div>
+            </div>
+            <div class="header-right-menu">≡</div>
+        </div>
+        <div class="calendar-container" id="calendar-body-area">
+            <div class="cal-weekdays"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+            <div class="cal-days-grid" id="cal-days-grid"></div>
+        </div>
+        <div class="edit-mode-btn" id="edit-mode-btn" onclick="toggleEditMode()">✍️</div>
+    </div>
+
+    <div id="page-growth" class="screen" style="background-color:#f7f9f7; flex-direction: column; justify-content:space-between;">
+        <div class="growth-header">生长记录</div>
+        <div class="growth-content">
+            <div class="time-toggle-container">
+                <div class="time-toggle-btn active" id="btn-chart-daily" onclick="switchChartData('daily')">每日</div>
+                <div class="time-toggle-btn" id="btn-chart-monthly" onclick="switchChartData('monthly')">每月</div>
+                <div class="time-toggle-btn" id="btn-chart-yearly" onclick="switchChartData('yearly')">每年</div>
+            </div>
+            <div class="stats-overview">
+                <div class="stat-box"><div class="stat-value" id="stat-clockin">0.0</div><div class="stat-label">累计打卡(时)</div></div>
+                <div class="stat-box"><div class="stat-value" id="stat-energy">0</div><div class="stat-label">累计能量</div></div>
+                <div class="stat-box"><div class="stat-value" id="stat-stage">🌱</div><div class="stat-label">当前形态</div></div>
+            </div>
+            <div class="chart-card">
+                <canvas id="growthChart"></canvas>
+            </div>
+            <div class="milestones-section">
+                <div class="section-title">植物历程</div>
+                <div class="milestone-item"><div class="milestone-icon locked">🌸</div><div class="milestone-info"><div class="milestone-name">繁花盛开阶段</div><div class="milestone-date">尚未解锁</div></div></div>
+                <div class="milestone-item"><div class="milestone-icon locked">🪴</div><div class="milestone-info"><div class="milestone-name">盆栽成长阶段</div><div class="milestone-date">尚未解锁</div></div></div>
+                <div class="milestone-item"><div class="milestone-icon active">🌱</div><div class="milestone-info"><div class="milestone-name">种下一颗新种子</div><div class="milestone-date">2026-04-06</div></div></div>
+            </div>
+        </div>
+        <div class="bottom-nav-wrapper">
+            <div class="bottom-nav-bar">
+                <div class="nav-tab" onclick="switchTab('page-7')"><span class="icon">🏠</span>首页</div>
+                <div class="nav-tab active" onclick="switchTab('page-growth')"><span class="icon">📈</span>生长记录</div>
+                <div class="diary-pull-up" onclick="switchTabAndOpenCalendar()"><div class="text">养花日记</div><div class="arrow">︽</div></div>
+                <div class="nav-tab" onclick="switchTab('page-circle')"><span class="icon">🌐</span>圈子</div>
+                <div class="nav-tab" onclick="switchTab('page-mine')"><span class="icon">👤</span>我的</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-circle" class="screen">
+        <div class="circle-header">
+            <div class="circle-title">花友圈</div>
+            <div class="circle-tabs">
+                <div class="circle-tab active">发现</div>
+                <div class="circle-tab">关注</div>
+            </div>
+        </div>
+
+        <div class="circle-feed" id="global-circle-feed">
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">👩‍🦰</div>
+                    <div class="post-info"><div class="post-name">春日漫步</div><div class="post-time">刚刚</div></div>
+                    <div class="circle-post-tag">🌸 繁花盛开</div>
+                </div>
+                <div class="post-content">坚持打卡一个月，我的小花终于完全绽放啦！看着它从一颗种子长到现在的样子，真的太有成就感了，分享给大家沾沾喜气~ ✨</div>
+                <div class="post-image">🌸</div>
+                <div class="post-actions">
+                    <div class="action-btn">❤️ 128</div><div class="action-btn">💬 32</div><div class="action-btn">↗️ 分享</div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">👱‍♂️</div>
+                    <div class="post-info"><div class="post-name">夜猫子打工人</div><div class="post-time">2小时前</div></div>
+                    <div class="circle-post-tag">🌿 枝叶繁茂</div>
+                </div>
+                <div class="post-content">深夜加班打卡。伴随着雨声白噪音，专注了两个小时，不仅做完了PPT，小植物也吸收了5点能量。大家晚安。📖💤</div>
+                <div class="post-image blue">🌿</div>
+                <div class="post-actions">
+                    <div class="action-btn">❤️ 89</div><div class="action-btn">💬 15</div><div class="action-btn">↗️ 分享</div>
+                </div>
+            </div>
+
+            <div style="height: 60px;"></div> </div>
+
+        <button class="fab-add" onclick="openProfileDrawer(document.getElementById('publishDrawer'))">+</button>
+
+        <div class="bottom-nav-wrapper">
+            <div class="bottom-nav-bar">
+                <div class="nav-tab" onclick="switchTab('page-7')"><span class="icon">🏠</span>首页</div>
+                <div class="nav-tab" onclick="switchTab('page-growth')"><span class="icon">📈</span>生长记录</div>
+                <div class="diary-pull-up" onclick="switchTabAndOpenCalendar()"><div class="text">养花日记</div><div class="arrow">︽</div></div>
+                <div class="nav-tab active" onclick="switchTab('page-circle')"><span class="icon">🌐</span>圈子</div>
+                <div class="nav-tab" onclick="switchTab('page-mine')"><span class="icon">👤</span>我的</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-mine" class="screen">
+        <div class="profile-scroll-area">
+            <div class="profile-header-bg">
+                <div class="nav-icon" onclick="switchTab('page-7')">&lt;</div>
+                <div class="nav-icon">⟳</div>
+            </div>
+
+            <div class="profile-info">
+                <div class="avatar" id="display-avatar"></div>
+                <button class="edit-btn" onclick="openProfileDrawer(document.getElementById('editDrawer'))">✎ 资料</button>
+                <h1 class="username" id="display-name">渴死的鱼</h1>
+                <div class="user-id">DOPE ID: 853OJYUB</div>
+                <p class="bio-text" id="display-bio">这个人很懒，什么都没写。每天都在发呆，希望能吃到好吃的甜点 🍰。</p>
+                <div class="tags-container">
+                    <span class="tag" id="display-gender">👦 男 24</span>
+                    <span class="tag" id="display-location">📍 北京市</span>
+                </div>
+                <div class="interest-tags-display" id="display-interests">
+                    <span>✨ 说唱</span><span>✨ 街舞</span><span>✨ 游戏</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="my-timeline-section">
+                <div class="timeline-container" id="myTimelineList">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <div class="timeline-date">28<span>3月</span></div>
+                            <div class="timeline-more">•••</div>
+                        </div>
+                        <div class="post-tags"><span class="post-tag">日常</span></div>
+                        <div class="post-text">深夜与冰雨，生而景渝人，难行宁逆道</div>
+                        <div class="post-images-grid">
+                            <div class="img-main"></div>
+                            <div class="img-sub-container"><div class="img-sub"></div><div class="img-sub"></div></div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <div class="timeline-date">24<span>3月</span></div>
+                            <div class="timeline-more">•••</div>
+                        </div>
+                        <div class="post-tags"><span class="post-tag">美食</span><span class="post-tag">今天有什么好笑的</span></div>
+                        <div class="post-text">今日审美打卡，棕色系~</div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 60px;"></div>
+        </div>
+
+        <button class="fab-add" onclick="openProfileDrawer(document.getElementById('publishDrawer'))">+</button>
+
+        <div class="bottom-nav-wrapper">
+            <div class="bottom-nav-bar">
+                <div class="nav-tab" onclick="switchTab('page-7')"><span class="icon">🏠</span>首页</div>
+                <div class="nav-tab" onclick="switchTab('page-growth')"><span class="icon">📈</span>生长记录</div>
+                <div class="diary-pull-up" onclick="switchTabAndOpenCalendar()"><div class="text">养花日记</div><div class="arrow">︽</div></div>
+                <div class="nav-tab" onclick="switchTab('page-circle')"><span class="icon">🌐</span>圈子</div>
+                <div class="nav-tab active" onclick="switchTab('page-mine')"><span class="icon">👤</span>我的</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar-menu" id="sidebar-menu">
+        <div class="sidebar-header">菜单</div>
+        <div class="sidebar-list">
+            <div class="sidebar-item">👤 个人信息</div>
+            <div class="sidebar-item">🎨 创作者中心</div>
+            <div class="sidebar-item">❓ 帮助与反馈</div>
+            <div class="sidebar-item">🛡️ 安全中心</div>
+            <div class="sidebar-item">📄 第三方信息共享清单</div>
+            <div class="sidebar-item">📋 个人信息清单</div>
+            <div class="sidebar-item">🔒 隐私保护指引</div>
+            <div class="sidebar-item danger">⚠️ 注销账号</div>
+            <div class="sidebar-item danger" onclick="logout()">🚪 退出登录/关闭</div>
+            <div class="sidebar-item">⚙️ 设置</div> 
+        </div>
+    </div>
+
+    <div class="profile-overlay" id="profile-overlay"></div>
+    <div class="profile-drawer" id="editDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title">编辑基本资料</div>
+            <div class="close-btn" onclick="closeProfileDrawers()">✕</div>
+        </div>
+        <div class="avatar-edit-box">
+            <div class="avatar-preview" id="edit-avatar-preview"></div>
+            <button class="avatar-change-btn" id="changeAvatarBtn">🎲 随机生成新头像</button>
+        </div>
+        <div class="form-group">
+            <label>ID 名字</label><input type="text" class="form-input" id="input-name" value="渴死的鱼" />
+        </div>
+        <div class="form-group">
+            <label>性别</label>
+            <div class="gender-group">
+                <button class="gender-btn active" data-icon="👦" data-text="男">男 👦</button>
+                <button class="gender-btn" data-icon="👧" data-text="女">女 👧</button>
+                <button class="gender-btn" data-icon="🤫" data-text="保密">保密 🤫</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>年龄</label>
+            <input type="number" class="form-input" id="input-age" value="24" />
+        </div>
+        <div class="form-group"><label>地区</label><input type="text" class="form-input" id="input-location" value="北京市" /></div>
+        <div class="form-group"><label>兴趣爱好 (用逗号分隔)</label><input type="text" class="form-input" id="input-interests" value="说唱, 街舞, 游戏"/></div>
+        <div class="form-group"><label>个人介绍</label><textarea class="form-input" id="input-bio">这个人很懒，什么都没写。每天都在发呆，希望能吃到好吃的甜点 🍰。</textarea></div>
+        <button class="btn-primary" id="saveEditBtn">保存修改</button>
+    </div>
+
+    <div class="profile-drawer" id="publishDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title">发布新动态</div>
+            <div class="close-btn" onclick="closeProfileDrawers()">✕</div>
+        </div>
+        <div class="form-group"><label>想说的话...</label><textarea class="form-input" id="postContent" placeholder="记录这一刻的美好..."></textarea></div>
+        <div class="form-group"><label>添加标签 (用空格分隔)</label><input type="text" class="form-input" id="postTags" placeholder="例如: 日常 美食 穿搭" /></div>
+        
+        <div class="form-group">
+            <label>添加图片 (选填，适配电脑/手机)</label>
+            <input type="file" id="postImageInput" accept="image/*" multiple style="display:none;">
+            <button type="button" class="form-input" style="cursor:pointer; text-align:center; background:#f0fbfc; color:#48cae4; font-weight:bold; border-color:#48cae4;" onclick="document.getElementById('postImageInput').click()">📸 点击选择图片</button>
+            <div id="postImagePreview" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;"></div>
+        </div>
+
+        <button class="btn-primary" id="publishBtn">立即发布 🚀</button>
+    </div>
+
+    <div id="desktop-pet" class="desktop-pet">
+        <svg class="pet-progress-ring" viewBox="0 0 100 100">
+            <circle class="pet-ring-bg" cx="50" cy="50" r="45"></circle>
+            <circle class="pet-ring-fill" id="pet-ring-fill" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <canvas id="pet-canvas"></canvas>
+        <div class="pet-stats">
+            <span id="pet-level">Lv.0</span> | 💧<span id="pet-water">0</span>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkin-modal">
+        <div class="journal-modal-content">
+            <h3 style="color: #007b99; margin-top: 0; text-align: center;">每日签到</h3>
+            <div class="checkin-grid">
+                <div class="checkin-day" id="checkin-day-1">第1天<br>+物资</div>
+                <div class="checkin-day">第2天<br>+物资</div>
+                <div class="checkin-day">第3天<br>+物资</div>
+                <div class="checkin-day">第4天<br>+物资</div>
+                <div class="checkin-day">第5天<br>+物资</div>
+                <div class="checkin-day">第6天<br>+物资</div>
+                <div class="checkin-day">第7天<br>🎁</div>
+            </div>
+            <button class="modal-confirm-btn" id="checkin-submit-btn" onclick="submitCheckin()">立即签到</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="journal-edit-modal"><div class="journal-modal-content"><div class="journal-header" id="edit-modal-title">2026年1月1日</div><div class="modal-emoji-row"><div class="modal-emoji-btn" onclick="selectModalEmoji('😀', this)">😀</div><div class="modal-emoji-btn" onclick="selectModalEmoji('😡', this)">😡</div><div class="modal-emoji-btn" onclick="selectModalEmoji('😢', this)">😢</div><div class="modal-emoji-btn" onclick="selectModalEmoji('😆', this)">😆</div></div><textarea id="journal-textarea" placeholder="在这里写下今天的内容..."></textarea><button class="modal-confirm-btn" onclick="saveJournal()">保存</button></div></div>
+    <div class="modal-overlay" id="journal-view-modal"><div class="journal-modal-content"><div class="journal-view-header"><span class="view-title" id="view-modal-title">2026年1月1日</span><span class="view-emoji" id="view-modal-emoji"></span></div><div class="journal-text-display" id="view-modal-text"></div></div></div>
+    <div class="modal-overlay" id="date-picker-modal"><div class="date-picker-box"><div class="picker-top-icon">🌱</div><div class="wheel-container"><div class="wheel-selection-highlight"></div><div class="wheel-col" id="wheel-year" onscroll="updateWheelSelection('year')"></div><div style="font-size:18px; margin: 0 10px; z-index:2;">年</div><div class="wheel-col" id="wheel-month" onscroll="updateWheelSelection('month')"></div><div style="font-size:18px; margin-left: 5px; z-index:2;">月</div></div><button class="modal-confirm-btn" id="confirm-date-btn">确认</button></div></div>
+</div>
+<audio id="bgm" src="bgm1.mp3" loop style="display:none;">
+<script>
+  const bgm = document.getElementById('bgm');
+  bgm.volume = 0.2;
+
+  document.addEventListener('click', async () => {
+    await bgm.play();
+
+    // 强制反复设置，确保浏览器生效
+    let attempts = 0;
+    const setSpeed = setInterval(() => {
+      bgm.playbackRate = 0.5;
+      attempts++;
+      if (attempts > 10) clearInterval(setSpeed);
+    }, 50);
+  }, { once: true });
+</script>
+
+<script src="main.js"></script>
+
+</body>
+</html>
